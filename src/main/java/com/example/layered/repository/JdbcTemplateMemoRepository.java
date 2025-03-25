@@ -53,13 +53,13 @@ public class JdbcTemplateMemoRepository implements MemoRepository {
     @Override
     public Optional<Memo> findMemoById(Long id) { //Optional은 null값을 안전하게 다루기 위해 사용하는 랩퍼클래스
         List<Memo> result = jdbcTemplate.query("select * from memo where id = ?", memoRowMapperV2(), id);//마지막에 들어가는 id값이 ?와 치환되면서 값이 들어갈 예정
-        return result.stream().findAny();//findAny를 사용하면 옵셔널 형태의 메모가 반환됨 >> 리스트형태의 메모는 비어있으면 null이 뜰 수 있기 때문에 findAny로 옵셔널 형태로 만듬
+        return result.stream().findAny(); //findAny를 사용하면 옵셔널 형태의 메모가 반환됨 >> 리스트형태의 메모는 비어있으면 null이 뜰 수 있기 때문에 findAny로 옵셔널 형태로 만듬
     }
 
     @Override
     public Memo findMemoByIdOrElseThrow(Long id) {
         List<Memo> result = jdbcTemplate.query("select * from memo where id = ?", memoRowMapperV2(), id);
-        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));//findAny 뒤에 orElseThrow가 붙으면 조회된 메모가 없는 경우 익셉션을 발생시키겠다라는 뜻
+        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id)); //findAny 뒤에 orElseThrow가 붙으면 조회된 메모가 없는 경우 익셉션을 발생시키겠다라는 뜻
     }
 
     @Override
